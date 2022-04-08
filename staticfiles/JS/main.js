@@ -39,3 +39,12 @@ function close_banner(){
     main_content.style.display = 'flex';
 }
 
+function like(){
+    let like_btn = document.getElementById('liked');
+    if (like_btn.style.color === 'black'){
+        like_btn.style.color = 'red';
+    }
+    else {
+        like_btn.style.color = 'black';
+    }
+}

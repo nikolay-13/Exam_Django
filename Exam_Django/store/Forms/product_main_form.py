@@ -1,6 +1,6 @@
 from django import forms
 
-from store.models import Product, ProductCategory, ProductSizes, ProductGender, ProductColors, ProductPictures
+from Exam_Django.store.models import Product, ProductCategory, ProductSizes, ProductGender, ProductColors, ProductPictures
 
 
 class ProductMainForm(forms.ModelForm):

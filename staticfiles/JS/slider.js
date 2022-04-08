@@ -26,3 +26,19 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
 }
+
+
+let slideI = 0;
+showS();
+
+function showS() {
+  let i;
+  let slides = document.getElementsByClassName("mySlide");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideI++;
+  if (slideI > slides.length) {slideI = 1}
+  slides[slideI-1].style.display = "block";
+  setTimeout(showS, 2000); // Change image every 2 seconds
+}

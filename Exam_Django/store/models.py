@@ -2,6 +2,8 @@ import random
 
 from django.db import models
 
+from Exam_Django.common.image_resize import image_resize
+
 
 def create_new_ref_number():
     return 'PDN#' + str(random.randint(1000000000, 9999999999))
@@ -33,6 +35,10 @@ class Product(models.Model):
     av_qnt = models.IntegerField(
         default=0,
 
+    )
+    brand = models.CharField(
+        max_length=30,
+        default='No brand',
     )
 
 
@@ -103,6 +109,8 @@ class ProductGender(models.Model):
 
 
 class ProductPictures(models.Model):
+    _MAX_WIDTH = 480
+    _MAX_HEIGHT = 640
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -118,3 +126,8 @@ class ProductPictures(models.Model):
         null=True,
         blank=True,
     )
+
+    def save(self, *args, **kwargs):
+        super(ProductPictures, self).save(*args, **kwargs)
+
+        img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)

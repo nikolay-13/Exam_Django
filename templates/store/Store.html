@@ -8,7 +8,6 @@
                 <a href="javascript:show_filters()" class="filter-icon"><i class="fa fa-solid fa-filter"
                                                                            id="filter-btn"></i></a>
                 <a style="text-align: center">Current Category</a>
-                {#    <p>Main Page</p>#}
             </div>
             <div class="middle">
                 <div class="main-left" id="filter-funcs">
@@ -21,92 +20,18 @@
                     {% for item in data.products %}
                         <div class="main-item" onmouseover="show_product_det('{{ item.product_id }}')"
                              onmouseout="hide_product_det('{{ item.product_id }}')">
-                            {% for pic in data.picture %}
-                                {% if pic.product_id_id == item.product_id %}
-                                    <img class="thumbnail" src="{{ pic.picture.url }}" id="img{{ item.product_id }}"
-                                         alt="Picture unavailable">
-                                {% endif %}
-                            {% endfor %}
-                            <p class="thumbnail-text" id="thumbnail-text{{ item.product_id }}">{{ item.title }}</p>
+                            <img class="thumbnail" src="{{ item.pictures.first.picture.url }}"
+                                 id="img{{ item.product_id }}"
+                                 alt="Picture unavailable">
+                            <p class="thumbnail-text" id="thumbnail-text{{ item.product_id }}">{{ item.brand }}--{{ item.title }}</p>
                             <div class="item-description" id="item-description{{ item.product_id }}">
                                 <h5><strong>{{ item.description }}</strong></h5>
                                 <hr>
-
-                                {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
                                 <a class="btn btn-outline-success" href="{% url 'product_details' item.product_id %}">View</a>
                                 <h4 style="display: inline-block; float: right">
                                     <strong>${{ item.price|floatformat:'2' }}</strong></h4>
                             </div>
                         </div>
-                        {##}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$15</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
-                        {##}
-                        {##}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$10</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$10</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$10</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$10</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
-                        {#        <div class="main-item">#}
-                        {#            <img class="thumbnail" src="{% static 'images/placeholder.png' %}">#}
-                        {#            <div style="display: none">#}
-                        {#                <h6><strong>Product</strong></h6>#}
-                        {#                <hr>#}
-                        {##}
-                        {#                <button class="btn btn-outline-secondary add-btn">Add to Cart</button>#}
-                        {#                <a class="btn btn-outline-success" href="#">View</a>#}
-                        {#                <h4 style="display: inline-block; float: right"><strong>$10</strong></h4>#}
-                        {#            </div>#}
-                        {#        </div>#}
                     {% endfor %}
                 </div>
             </div>

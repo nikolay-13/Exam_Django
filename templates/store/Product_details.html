@@ -44,40 +44,46 @@
                         {% endfor %}
                     </div>
                 </div>
-            <div class="details-description">
-                <div style="font-weight: bolder">
-                    Description:
-                </div>
-                <div class="details-description-text">
-                <p>{{ product.description }}</p>
+                <div class="details-description">
+                    <div style="font-weight: bolder">
+                        Description:
+                    </div>
+                    <div class="details-description-text">
+                        <p>{{ product.description }}</p>
 
+                    </div>
                 </div>
+
             </div>
-
-        </div>
             <div class="item-description-right">
 
-                <p>Category: {{ gender.gender }}s &nbsp {{ product.title }}s</p>
+
+                <p>Brand: &nbsp;{{ product.brand }}</p>
                 <p>Price: ${{ product.price|floatformat:'2' }}</p>
-                <a>
-                    <select>
-                        <option disabled selected>choose color</option>
+                <p>Available colors:
+                    <select class="selection">
+                        <option disabled selected>---</option>
                         {% for color in colors %}
-                            <option>{{color.color }}</option>
+                            <option>{{ color.color }}</option>
                         {% endfor %}
                     </select>
-                </a>
-                <p>Available sizes:</p>
-            <p>{% for size in sizes %}
-            {{ size.size }}
-             {% endfor %}</p>
-            <select>
-            <option disabled selected> Choose size</option>
-            {% for size in sizes %}
+                </p>
+                <p>Available sizes:
+                    <select class="selection">
+                        <option disabled selected>---</option>
+                        {% for size in sizes %}
 
-            <option href="#">{{ size.size }}</option>
-                {% endfor %}
-            </select>
+                            <option href="#">{{ size.size }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+
+
+                <a href="#" class="buy-button">Buy<i style="margin-left: 10px" class="fa fa-solid fa-cart-plus"></i></a>
+
+
+                <a class="liked-button" href="javascript:like()" id="liked"><i class="fa fa-solid fa-heart"></i></a>
+
             </div>
         </div>
     </div>

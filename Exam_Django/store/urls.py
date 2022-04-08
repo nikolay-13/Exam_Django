@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from store import views
+from Exam_Django.store import views
 
 urlpatterns = [
     # Leave as empty string for base url
@@ -11,7 +11,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name="checkout"),
     path('create_product', views.CreateProduct.as_view(), name='create_product'),
     path('none/', views.an, ),
-    path('product_details/<str:pk>/',views.ProductDetailsView.as_view(), name='product_details' ),
+    path('product_details/<str:pk>/', views.ProductDetailsView.as_view(), name='product_details'),
 
 ]
 if settings.DEBUG:

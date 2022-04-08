@@ -1,19 +1,18 @@
 from django.shortcuts import render
 from django.views import generic as views
 
-from store.Forms.product_main_form import ProductMainForm
-from store.models import ProductCategory, ProductSizes, ProductGender, ProductColors, Product, ProductPictures
+from Exam_Django.store.Forms.product_main_form import ProductMainForm
+from Exam_Django.store.models import Product
 
 
 class StoreMainPageView(views.ListView):
     context_object_name = 'data'
 
-    template_name = 'store/store.html'
+    template_name = 'store/Store.html'
 
     def get_queryset(self):
         dataset = {
             'products': Product.objects.all(),
-            'picture': ProductPictures.objects.all(),
         }
         return dataset
 
@@ -31,42 +30,25 @@ class ProductDetailsView(views.DetailView):
         gender = self.object.gender.first()
         pictures = self.object.pictures.all()
         dataset = {
-            'product':product,
+            'product': product,
             'sizes': sizes,
             'colors': colors,
-            'category':category,
-            'gender' : gender,
+            'category': category,
+            'gender': gender,
             'pictures': pictures,
-            'range' : range(pictures.count()),
+            'range': range(pictures.count()),
         }
         return dataset
 
 
-# def product_details_page(request, pk):
-#     product = Product.objects.get(product_id=pk)
-#     sizes = product.size.all()
-#     colors = product.color.all()
-#     category = product.category.first()
-#     gender = product.gender.first()
-#
-#     context = {
-#         'product': product,
-#         'sizes': sizes,
-#         'colors': colors,
-#         'category': category,
-#         'gender': gender
-#     }
-#     return render(request, 'store/Product_details.html', context)
-
-
 def cart(request):
     context = {}
-    return render(request, 'store/cart.html', context)
+    return render(request, 'store/Cart.html', context)
 
 
 def checkout(request):
     context = {}
-    return render(request, 'store/checkout.html', context)
+    return render(request, 'store/Checkout.html', context)
 
 
 # def create_product(request):
