@@ -48,3 +48,45 @@ function like(){
         like_btn.style.color = 'black';
     }
 }
+
+
+function category(cat){
+    let Mens = document.getElementById('mens-cat')
+    let Women = document.getElementById('women-cat')
+    let Kids  = document.getElementById('kids-cat')
+    let subCategories = document.getElementById('categories')
+    let catDisplay = document.getElementById('category-text').innerHTML = `${cat}`
+    if (subCategories.style.display === 'none'){
+        if (cat === 'Men'){
+            Women.style.display = 'none';
+            Kids.style.display = 'none';
+            subCategories.style.display = 'grid';
+        }else if (cat === 'Women'){
+            Mens.style.display = 'none';
+            Kids.style.display = 'none';
+            subCategories.style.display = 'grid';
+        }else if (cat === 'Kids'){
+            Mens.style.display = 'none';
+            Women.style.display = 'none';
+            subCategories.style.display = 'grid';
+        }
+    }
+    else {
+        subCategories.style.display = 'none';
+        Mens.style.display = 'block';
+        Women.style.display = 'block';
+        Kids.style.display = 'block';
+    }
+
+
+}
+
+function searchc(param){
+    let category = document.getElementById('category-text')
+    category.innerHTML = `${category.innerHTML}/${param}`;
+}
+
+function red(){
+    let qq = document.getElementById('category-text')
+    location.href=`/?q=${qq.innerHTML}`;
+}

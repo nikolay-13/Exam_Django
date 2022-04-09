@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic as views
 
@@ -11,8 +12,21 @@ class StoreMainPageView(views.ListView):
     template_name = 'store/Store.html'
 
     def get_queryset(self):
+        q = self.request.GET.get('q') if self.request.GET.get('q') else ''
+        current_cat = q.lower()
+        if not q == '':
+            gender, category = q.split('/')
+        else:
+            category, gender = '', ''
+        products = Product.objects.filter(
+            Q(gender__gender__icontains=gender.lower()) &
+            Q(category__category__icontains=category.lower())
+        )
+        if current_cat == '':
+            current_cat = 'All Items'
         dataset = {
-            'products': Product.objects.all(),
+            'products': products,
+            'category': current_cat,
         }
         print(self.request.user)
         return dataset
@@ -68,9 +82,3 @@ class CreateProduct(views.CreateView):
     template_name = 'store/forms/ceate_product.html'
     form_class = ProductMainForm
     success_url = '#'
-
-
-def an(requst):
-    products = Product.objects.all()
-    size = products.prefetch_related('productsizes_set')
-    return render(requst, 'store/forms/../templates/store/some.html', {'products': products, 'size': size})

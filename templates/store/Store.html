@@ -6,17 +6,41 @@
         <div class="main-page" id="main-page">
             <div class="main-top-center">
                 <a href="javascript:show_filters()" class="filter-icon"><i class="fa fa-solid fa-filter"
-                                                                           id="filter-btn"></i></a>
-                <a style="text-align: center">Current Category</a>
+                                                                           id="filter-btn"></i>Categories</a>
+                <a style="display: none" id="category-text">All items</a>
+                <p style="text-align: center; font-weight: bolder;font-size: 1.1em">{{ data.category }}</p>
             </div>
             <div class="middle">
                 <div class="main-left" id="filter-funcs">
-                    <a>a</a>
-                    <a>b</a>
-                    <a>c</a>
+                    <ul style="display: grid; font-weight: bold">
+    <li id="mens-cat" style="display: block">
+        <a href="javascript:category('Men')">Men</a>
+    </li>
+    <li id="women-cat" style="display: block">
+        <a href="javascript:category('Women')">Women</a>
+    </li>
+    <li id="kids-cat" style="display: block">
+        <a href="javascript:category('Kids')">Kids</a>
+    </li>
+</ul>
+<ul id="categories" style="display: none;list-style: none;font-weight: bold">
+    <li>
+        <a href="javascript:red()" onclick="searchc('Shirts')">Shirts</a>
+    </li>
+    <li>
+        <a href="javascript:red()" onclick="searchc('Jeans')">Jeans</a>
+    </li>
+    <li>
+        <a href="javascript:red()" onclick="searchc('Jackets')">Jackets</a>
+    </li>
+    <li>
+        <a href="javascript:red()" onclick="searchc('Tops')">Tops</a>
+    </li>
+</ul>
                 </div>
 
-                <div class="main-right">
+                <div class="main-right" id="items-iter">
+                {% if data.products %}
                     {% for item in data.products %}
                         <div class="main-item" onmouseover="show_product_det('{{ item.product_id }}')"
                              onmouseout="hide_product_det('{{ item.product_id }}')">
@@ -33,6 +57,9 @@
                             </div>
                         </div>
                     {% endfor %}
+                {% else %}
+                    <h2>Sorry.  No content in this category yet.</h2>
+                {% endif %}
                 </div>
             </div>
         </div>
