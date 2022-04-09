@@ -14,6 +14,7 @@ class StoreMainPageView(views.ListView):
         dataset = {
             'products': Product.objects.all(),
         }
+        print(self.request.user)
         return dataset
 
 

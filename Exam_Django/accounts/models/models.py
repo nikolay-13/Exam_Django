@@ -21,7 +21,6 @@ class Profile(models.Model):
     _LAST_NAME_MAX_LENGTH = 20
     _FIRST_NAME_MIN_LENGTH = 2
     _LAST_NAME_MIN_LENGTH = 2
-    # _TEL_MIN_LENGTH = 10
     _TEL_MAX_LENGTH = 10
     profile_picture = models.ImageField(
         upload_to='media/profile_pics',
@@ -57,7 +56,6 @@ class Profile(models.Model):
         unique=True,
         default=create_new_ref_number
     )
-    # profile_picture = models.
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, primary_key=True)
 
     def save(self, *args, **kwargs):
