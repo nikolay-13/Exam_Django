@@ -66,19 +66,8 @@ def checkout(request):
     return render(request, 'store/Checkout.html', context)
 
 
-# def create_product(request):
-#     form = ProductMainForm()
-#     if request.method.lower() == 'post':
-#         form = ProductMainForm(request.POST)
-#         if form.is_valid():
-#             product = form.save()
-#     context = {
-#         'form': form,
-#     }
-#     return render(request, 'store/forms/ceate_product.html', context)
-#
-
 class CreateProduct(views.CreateView):
     template_name = 'store/forms/ceate_product.html'
     form_class = ProductMainForm
     success_url = '#'
+

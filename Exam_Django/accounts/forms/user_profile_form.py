@@ -97,3 +97,15 @@ class UserLogInForm(forms.Form):
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         return user
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        exclude = (
+            'user',
+        )
+
+    email = forms.EmailField()
+
+

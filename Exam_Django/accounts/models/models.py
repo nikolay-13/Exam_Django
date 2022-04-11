@@ -15,8 +15,8 @@ def create_new_ref_number():
 
 
 class Profile(models.Model):
-    _MAX_WIDTH = 100
-    _MAX_HEIGHT = 100
+    _MAX_WIDTH = 250
+    _MAX_HEIGHT = 250
     _FIRST_NAME_MAX_LENGTH = 20
     _LAST_NAME_MAX_LENGTH = 20
     _FIRST_NAME_MIN_LENGTH = 2
@@ -43,10 +43,9 @@ class Profile(models.Model):
     )
     tel_number = models.CharField(
         max_length=_TEL_MAX_LENGTH,
-        unique=True,
+
         validators=(
             tel_validator,
-            # validators.MinLengthValidator(_TEL_MIN_LENGTH),
         )
     )
     ref_num = models.CharField(
@@ -57,6 +56,9 @@ class Profile(models.Model):
         default=create_new_ref_number
     )
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, primary_key=True)
+
+    class Meta:
+        unique_together = ('tel_number', 'ref_num')
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)

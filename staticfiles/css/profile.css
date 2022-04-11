@@ -1,0 +1,71 @@
+.profile-container {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+.profile-card{
+    margin-top: 6rem;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: rgba(217, 212, 211, 0.82);
+    box-shadow: -8px -2px 28px -8px #000000;
+    border-radius: 20px;
+    font-weight: bolder;
+    font-size: 1.3em;
+    backdrop-filter: blur(10px);
+    height: 700px;
+    margin-bottom: 6rem;
+    width: 80%;
+    align-items: center;
+}
+.profile-image{
+    border: 1px solid rgba(217, 212, 211, 0.94);
+    box-shadow: 1px 1px 1px 1px rgba(158, 158, 158, 0.77);
+    width: 180px;
+    height: 165px;
+    border-radius: 50%;
+    margin: 10px;
+}
+.profile-details{
+    margin: 10px;
+
+}
+.profile-details p{
+    font-size: 0.9em;
+    font-family: monospace;
+    background: rgba(158, 158, 158, 0.66);
+    border-radius: 20px;
+    padding-left: 10px;
+    color: white;
+}
+.profile-details a{
+    font-size: 0.9em;
+    text-decoration: none;
+    font-family: monospace;
+}
+.profile-btns{
+    display: flex;
+    float: right;
+}
+.profile-btn{
+    font-family: monospace;
+    font-size: 0.9em;
+    border: 1px solid rgba(217, 212, 211, 0.94);
+    box-shadow: 1px 1px 1px 1px rgba(158, 158, 158, 0.77);
+    color: white;
+    margin: 20px;
+    text-decoration: none;
+    background: darkgray;
+    padding: 5px;
+    border-radius: 10px;
+}
+.profile-btn:hover{
+    box-shadow: none;
+}
+.profile-btn:active{
+    box-shadow: none;
+}

@@ -1,0 +1,26 @@
+{% extends 'store/Main.html' %}
+{% load static %}
+{% block content %}
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-picture">
+                {% if profile.profile_picture %}
+            <img class="profile-image" src="{{ profile.profile_picture.url }}" alt="Profile picture unavailable">
+                    {% else %}
+                    <img class="profile-image" src="{% static 'images/blank-profile.png' %}" alt="Profile picture unavailable">
+                {% endif %}
+                <a href="{% url 'logout' %}" class="profile-btn" style="margin: 0">Log Out</a>
+            </div>
+                <div class="profile-details">
+                    <p>First Name: {{ profile.first_name }}</p>
+                    <p>Last Name: {{ profile.last_name }}</p>
+                    <p>Email: <a href="#">{{ profile.user.email }}</a></p>
+                    <p>Mobile number: <a href="#"> {{ profile.tel_number }}</a></p>
+                </div>
+            <div class="profile-btns">
+            <a href="{% url 'edit_profile' %}" class="profile-btn">Edit Profile</a>
+            <a href="{% url 'delete_profile' %}" class="profile-btn">Delete Profile</a>
+            </div>
+            </div>
+        </div>
+{% endblock %}
