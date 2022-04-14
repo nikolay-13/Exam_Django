@@ -62,8 +62,8 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
-
-        img = image_resize(self.profile_picture, self._MAX_WIDTH, self._MAX_HEIGHT)
+        if self.profile_picture:
+            img = image_resize(self.profile_picture, self._MAX_WIDTH, self._MAX_HEIGHT)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

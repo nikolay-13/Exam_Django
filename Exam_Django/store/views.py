@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic as views
 
+from Exam_Django.accounts.views import get_user
 from Exam_Django.store.Forms.product_main_form import ProductMainForm
 from Exam_Django.store.models import Product
 
@@ -16,19 +17,17 @@ class StoreMainPageView(views.ListView):
         current_cat = q.lower()
         if not q == '':
             gender, category = q.split('/')
+            products = Product.objects.filter(
+                Q(gender__gender__icontains=gender.lower()) &
+                Q(category__category__icontains=category.lower()))
         else:
-            category, gender = '', ''
-        products = Product.objects.filter(
-            Q(gender__gender__icontains=gender.lower()) &
-            Q(category__category__icontains=category.lower())
-        )
+            products = Product.objects.all()
         if current_cat == '':
             current_cat = 'All Items'
         dataset = {
             'products': products,
             'category': current_cat,
         }
-        print(self.request.user)
         return dataset
 
 

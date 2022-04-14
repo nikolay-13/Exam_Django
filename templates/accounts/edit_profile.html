@@ -1,27 +1,26 @@
 {% extends 'store/Main.html' %}
+{% load static %}
 {% block content %}
     <div class="profile-container">
         <div class="profile-card">
-            <div class="profile-picture">
-            <img class="profile-image" src="{{ profile.profile_picture.url }}" alt="Profile picture unavailable">
-                <a href="{% url 'logout' %}" class="profile-btn" style="margin: 0">Log Out</a>
-            </div>
-                <div class="profile-details">
-                    <p>First Name: {{ profile.first_name }}</p>
-                    <p>Last Name: {{ profile.last_name }}</p>
-                    <p>Email: <a href="#">{{ profile.user.email }}</a></p>
-                    <p>Mobile number: <a href="#"> {{ profile.tel_number }}</a></p>
-                </div>
-            <div class="profile-btns">
-            <a href="#" class="profile-btn">Edit Profile</a>
-            <a href="#" class="profile-btn">Delete Profile</a>
-            </div>
-            </div>
-        </div>
-    <form method="post" enctype="multipart/form-data">
-    {{ form.as_p }}
-    {% csrf_token %}
-<input type="submit">
-    </form>
-{% endblock %}
+            <form class="edit_profile_form" method="post" enctype="multipart/form-data">
+                <div class="profile-picture">
+{#                                    {% if profile.profile_picture %}#}
+                    <img class="profile-image" src="{{ pic.url }}" alt="Profile picture unavailable">
+                    <input type="file" name="profile_picture" id="profile_picture_id">
 
+                </div>
+                <div class="profile-details">
+                    <p>First Name: {{ form.first_name }}</p>
+                    <p>Last Name: {{ form.last_name }}</p>
+                    <p>Email: <a href="#">{{ form.email }}</a></p>
+                    <p>Mobile number: <a href="#"> {{ form.tel_number }}</a></p>
+                </div>
+                <div class="profile-btns">
+                    {% csrf_token %}
+                    <input class="profile-btn" type="submit" value="Save" id="save-btn">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

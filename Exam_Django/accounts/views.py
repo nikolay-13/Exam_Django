@@ -62,6 +62,7 @@ class ProfileDetailsView(views.generic.View):
         if user:
             context = {
                 'profile': user,
+                'picture' : user.profile_picture,
             }
             return render(request, self.template_name, context)
         return HttpResponse('<h1>Unauthorized</h1>', status=401)
@@ -83,6 +84,7 @@ class EditProfileView(views.generic.View):
                         'profile_picture': user.profile_picture,
                         'email': user.user.email,
                     }),
+                'pic': user.profile_picture,
             }
             return render(request, self.template_name, context)
         return HttpResponse('<h1>Unauthorized</h1>', status=401)
@@ -115,7 +117,6 @@ class DeleteProfileView(views.generic.View):
             user.user.delete()
             return redirect('login_page')
         return HttpResponse('<h1>Unauthorized</h1>', status=401)
-
 
 
 def get_user(request):

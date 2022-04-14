@@ -95,3 +95,20 @@
 select {
   -webkit-appearance: none;
 }
+
+.edit_profile_form input{
+    border-radius: 20px;
+    font-size: 1em;
+    padding: 2px 2px 2px 4px;
+    background: rgba(255, 255, 255, 0.49);
+    border: none;
+    color: #616161;
+    font-family: monospace;
+    width: 100%;
+}
+.edit_profile_form #profile_picture-clear_id{
+    display: none;
+}
+#save-btn{
+    width: 90px;
+}

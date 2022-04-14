@@ -1,12 +1,13 @@
 {% extends 'store/Main.html' %}
 {% block content %}
     <div class="details-container">
-    <div style="margin: 50px">
-    <form method="post" enctype="multipart/form-data">
-{{ form.as_p }}
-    {% csrf_token %}
-    <input type="submit">
+    <div class="profile-card">
+    <form class="edit_profile_form" style="text-align: left;margin: 20px" method="post" enctype="multipart/form-data">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input style="width: 100px;" type="submit"value="Register">
     </form>
     </div>
     </div>
 {% endblock %}
+

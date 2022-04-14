@@ -1,9 +1,13 @@
 {% load static %}
+{% load auth_extras %}
 <div class="w3-top">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
         <a href="{% url 'store' %}" class="w3-bar-item w3-button w3-wide"><img style="max-height: 30px"
                                                                class="nav-image"
                                                                src="{% static 'images/favico.png' %}"></a>
+{#        {% if user|has_group:'managers'%}#}
+    <a href="#" class="w3-bar-item w3-button w3-button">Add Item</a>
+{#    {% endif %}#}
 
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small" id="filter-func">

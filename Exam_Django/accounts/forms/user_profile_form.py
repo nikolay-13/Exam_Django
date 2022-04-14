@@ -17,7 +17,9 @@ class UserProfileCreationForm(UserCreationForm):
     _Name_Character_Msg = ' must contain only letters.'
     _TEL_MESSAGE = 'Make sure you entered a valid number.'
     _TEL_MESSAGE_UNIQUE = 'User with this number already exists.'
-    profile_picture = forms.ImageField()
+    profile_picture = forms.ImageField(
+        required=False,
+    )
     first_name = forms.CharField(
         max_length=30,
     )
@@ -30,7 +32,8 @@ class UserProfileCreationForm(UserCreationForm):
 
     class Meta:
         model = UserModel
-        fields = ('email',)
+        fields = ('email', 'password1', 'password2')
+
 
     def clean_first_name(self):
         super(UserProfileCreationForm, self).clean()
@@ -78,6 +81,7 @@ class UserProfileCreationForm(UserCreationForm):
             user=user_p,
         )
         return user_p
+
 
 
 class UserLogInForm(forms.Form):

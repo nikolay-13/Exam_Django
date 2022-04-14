@@ -1,7 +1,10 @@
 import random
 
+from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.safestring import mark_safe
 
+from Exam_Django.common import choices
 from Exam_Django.common.image_resize import image_resize
 
 
@@ -10,6 +13,8 @@ def create_new_ref_number():
 
 
 class Product(models.Model):
+    _MIN_QNT = 0
+    _MIN_PRICE = 0
     product_id = models.CharField(
         primary_key=True,
         max_length=16,
@@ -27,6 +32,9 @@ class Product(models.Model):
         blank=False,
         null=False,
         default=0,
+        validators=(
+            MinValueValidator(_MIN_PRICE),
+        )
     )
     description = models.TextField(
         blank=False,
@@ -34,6 +42,9 @@ class Product(models.Model):
     )
     av_qnt = models.IntegerField(
         default=0,
+        validators=(
+            MinValueValidator(_MIN_QNT),
+        )
 
     )
     brand = models.CharField(
@@ -53,13 +64,15 @@ class ProductSizes(models.Model):
         related_name='size',
     )
     size = models.CharField(
-        max_length=10,
+        max_length=max((len(x) for x, _ in choices.SIZES)),
         null=False,
         blank=False,
+        choices=choices.SIZES,
     )
 
 
 class ProductColors(models.Model):
+    _COLOR_MAX_LENGTH = 20
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -70,7 +83,7 @@ class ProductColors(models.Model):
         related_name='color',
     )
     color = models.CharField(
-        max_length=10,
+        max_length=_COLOR_MAX_LENGTH,
         null=True,
         blank=True,
     )
@@ -87,9 +100,10 @@ class ProductCategory(models.Model):
         related_name='category'
     )
     category = models.CharField(
-        max_length=30,
+        max_length=max((len(x) for x, _ in choices.CATEGORY)),
         null=False,
         blank=False,
+        choices=choices.CATEGORY,
     )
 
 
@@ -104,7 +118,8 @@ class ProductGender(models.Model):
         related_name='gender'
     )
     gender = models.CharField(
-        max_length=20,
+        max_length=max((len(x) for x, _ in choices.GENDER)),
+        choices=choices.GENDER,
     )
 
 
@@ -127,7 +142,9 @@ class ProductPictures(models.Model):
         blank=True,
     )
 
+
     def save(self, *args, **kwargs):
         super(ProductPictures, self).save(*args, **kwargs)
 
         img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)
+        return img

@@ -1,13 +1,13 @@
 {% extends 'store/Main.html' %}
 {% block content %}
     <div class="details-container">
-    <div style="margin: 200px">
-    <form method="post">
-{{ form.as_p }}
+    <div class="profile-card">
+    <form class="edit_profile_form" style="text-align: center" method="post">
+        {{ form.as_table }}
         {% csrf_token %}
-        <input type="submit">
+        <input style="width: 100px;" type="submit"value="LogIn">
     </form>
-        Still don't have an account. <a href="{% url 'registration' %}">Create now.</a>
+        <p style="font-size: 0.7em;text-align: center">Still don't have an account. <a style="color: dodgerblue" href="{% url 'registration' %}">Create now.</a></p>
     </div>
     </div>
 {% endblock %}

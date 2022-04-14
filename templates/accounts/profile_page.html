@@ -4,8 +4,8 @@
     <div class="profile-container">
         <div class="profile-card">
             <div class="profile-picture">
-                {% if profile.profile_picture %}
-            <img class="profile-image" src="{{ profile.profile_picture.url }}" alt="Profile picture unavailable">
+                {% if picture %}
+            <img class="profile-image" src="{{ picture.url }}" alt="Profile picture unavailable">
                     {% else %}
                     <img class="profile-image" src="{% static 'images/blank-profile.png' %}" alt="Profile picture unavailable">
                 {% endif %}

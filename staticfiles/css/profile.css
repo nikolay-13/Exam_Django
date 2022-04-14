@@ -21,6 +21,7 @@
     margin-bottom: 6rem;
     width: 80%;
     align-items: center;
+    overflow-y: auto;
 }
 .profile-image{
     border: 1px solid rgba(217, 212, 211, 0.94);
