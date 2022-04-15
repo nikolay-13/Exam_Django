@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import generic as views
 
 from Exam_Django.cart.forms import CartAddItem
-from Exam_Django.common.choices import get_color_choice, get_size_choice
+from Exam_Django.common.choices import get_choice, get_qnt_choice
 from Exam_Django.staff_app.Forms.product_main_form import ProductMainForm
 from Exam_Django.store.models import Product
 
@@ -38,9 +38,10 @@ class ProductDetailsView(views.DetailView):
     model = Product
 
     def get_context_data(self, **kwargs):
-        sizes = get_size_choice(self.object.size.all())
-        colors = get_color_choice(self.object.color.all())
-        cart_form = CartAddItem(color_choice=colors, size_choice=sizes)
+        sizes = get_choice(self.object.size.all())
+        colors = get_choice(self.object.color.all())
+        qnt = get_qnt_choice(self.object.av_qnt)
+        cart_form = CartAddItem(color_choice=colors, size_choice=sizes, av_qnt=qnt)
         product = self.object
         sizes = self.object.size.all()
         colors = self.object.color.all()

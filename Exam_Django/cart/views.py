@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 
 from Exam_Django.cart.forms import CartAddItem
-from Exam_Django.common.choices import get_size_choice, get_color_choice
 from Exam_Django.store.models import Product
 from Exam_Django.cart.cart import Cart
 
@@ -13,7 +12,12 @@ def add_to_cart(request, product_pk):
     product = get_object_or_404(Product, product_id=product_pk)
     sizes = request.POST.get('size')
     colors = request.POST.get('color')
-    form = CartAddItem(request.POST, color_choice=((colors, colors),), size_choice=((sizes, sizes),))
+    qnt = request.POST.get('quantity')
+    form = CartAddItem(request.POST,
+                       color_choice=((colors, colors),),
+                       size_choice=((sizes, sizes),),
+                       av_qnt=((qnt,qnt),)
+                       )
     if form.is_valid():
         cl_dat = form.cleaned_data
         cart.add(product=product,
