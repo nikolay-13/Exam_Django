@@ -2,8 +2,9 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic as views
 
-from Exam_Django.accounts.views import get_user
-from Exam_Django.store.Forms.product_main_form import ProductMainForm
+from Exam_Django.cart.forms import CartAddItem
+from Exam_Django.common.choices import get_color_choice, get_size_choice
+from Exam_Django.staff_app.Forms.product_main_form import ProductMainForm
 from Exam_Django.store.models import Product
 
 
@@ -37,6 +38,9 @@ class ProductDetailsView(views.DetailView):
     model = Product
 
     def get_context_data(self, **kwargs):
+        sizes = get_size_choice(self.object.size.all())
+        colors = get_color_choice(self.object.color.all())
+        cart_form = CartAddItem(color_choice=colors, size_choice=sizes)
         product = self.object
         sizes = self.object.size.all()
         colors = self.object.color.all()
@@ -51,6 +55,7 @@ class ProductDetailsView(views.DetailView):
             'gender': gender,
             'pictures': pictures,
             'range': range(pictures.count()),
+            'cart_form' :cart_form,
         }
         return dataset
 

@@ -1,0 +1,22 @@
+.table_cart{
+    display: table;
+    width: 90%;
+    margin: 10px;
+}
+.table_cart td{
+    margin: 10px;
+    font-size: 0.85em;
+}
+.table_cart th{
+    font-size: 0.8em;
+    text-align: left;
+}
+.last-row{
+    margin-top: 20px;
+    text-align: right;
+}
+.table-image{
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+}

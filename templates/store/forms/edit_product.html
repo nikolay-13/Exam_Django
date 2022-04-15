@@ -1,0 +1,12 @@
+{% extends 'store/Main.html' %}
+{% block content %}
+     <div class="edit-container">
+        <div class="edit-card">
+<form method="post" class="edit_product_form" enctype="multipart/form-data">
+    {{ form.as_table}}
+    {% csrf_token %}
+    <input type="submit" value="save">
+</form>
+        </div>
+     </div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'store/Main.html' %}
+{% block content %}
+    <div class="profile-container">
+    <div class="profile-card">
+<h1>Shopping cart</h1>
+    <table class="table_cart">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Product</th>
+        <th>Brand</th>
+        <th>Quantity</th>
+        <th>Size</th>
+        <th>Color</th>
+        <th>Unit Price</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart %}
+        <tr>
+        <td>
+            {% for img in item.product.pictures.all %}
+                {% if forloop.counter == 1 %}
+            <a href="{{ item.product.get_absolute_url }}">
+                <img class="table-image" src="{{ img.picture.url }}" alt="No image">
+            </a>
+                {% endif %}
+                {% endfor %}
+        </td>
+        <td>
+            {{ item.product.title }}
+        </td>
+        <td>
+            {{ item.product.brand }}
+        </td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.size }}</td>
+        <td>{{ item.color }}</td>
+        <td class="">${{ item.price }}</td>
+        <td class="">${{ item.total_price }}</td>
+        <td>
+            <form action="{% url 'remove_from_cart' item.product.product_id%}" method="post">
+                <input class="buy-button" style="background: rgba(220,20,60,0.62)" type="submit" value="Remove">
+                {% csrf_token %}
+            </form>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <p style="text-align: right;margin: 20px;font-weight: bold;font-family: monospace">Total: ${{ cart.get_total_price }}</p>
+    <p style="text-align: right;margin: 20px">
+    <a href="#" class="buy-button">Checkout</a>
+    </p>
+    </div>
+    </div>
+{% endblock %}

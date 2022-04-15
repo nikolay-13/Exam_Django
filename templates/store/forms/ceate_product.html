@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post" enctype="multipart/form-data">
-    {{ form.as_p }}
-    {{ form1.as_p }}
-    {{ form2.as_p }}
-    {{ form3.as_p }}
-    {{ form4.as_p }}
+{% extends 'store/Main.html' %}
+{% block content %}
+    <div class="edit-container">
+        <div class="edit-card">
+<form method="post" class="edit_product_form" enctype="multipart/form-data">
+    {{ form}}
     {% csrf_token %}
-    <input type="submit">
+    <input type="submit" value="Save" id="save-btn">
 </form>
-</body>
-</html>
+        </div>
+    </div>
+{% endblock %}

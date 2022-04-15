@@ -19,4 +19,7 @@ class UserProfile(base_user.AbstractBaseUser, PermissionsMixin):
     created_on = models.DateTimeField(
         auto_now_add=True,
     )
+    is_active = models.BooleanField(
+        default=True,
+    )
     objects = UserProfileManager()

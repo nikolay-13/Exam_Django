@@ -2,7 +2,6 @@ import random
 
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.utils.safestring import mark_safe
 
 from Exam_Django.common import choices
 from Exam_Django.common.image_resize import image_resize
@@ -69,6 +68,8 @@ class ProductSizes(models.Model):
         blank=False,
         choices=choices.SIZES,
     )
+    def __str__(self):
+        return self.size
 
 
 class ProductColors(models.Model):
@@ -87,6 +88,9 @@ class ProductColors(models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return self.color
 
 
 class ProductCategory(models.Model):
@@ -142,9 +146,11 @@ class ProductPictures(models.Model):
         blank=True,
     )
 
-
     def save(self, *args, **kwargs):
         super(ProductPictures, self).save(*args, **kwargs)
 
         img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)
         return img
+
+    def __str__(self):
+        return self.picture

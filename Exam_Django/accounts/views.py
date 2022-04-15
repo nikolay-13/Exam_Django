@@ -1,6 +1,6 @@
 from django import views
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView, PasswordChangeView, PasswordResetView
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -62,7 +62,7 @@ class ProfileDetailsView(views.generic.View):
         if user:
             context = {
                 'profile': user,
-                'picture' : user.profile_picture,
+                'picture': user.profile_picture,
             }
             return render(request, self.template_name, context)
         return HttpResponse('<h1>Unauthorized</h1>', status=401)
@@ -126,3 +126,13 @@ def get_user(request):
             if request.user == user.user:
                 return user
     return None
+
+
+class PasswordChange(PasswordChangeView):
+    template_name = 'accounts/password/change_password.html'
+    success_url = reverse_lazy('logout_c')
+
+
+class ResetPassword(PasswordResetView):
+    template_name = 'accounts/password/reset_password.html'
+    success_url = reverse_lazy('logout_c')

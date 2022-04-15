@@ -9,7 +9,7 @@
                     {% else %}
                     <img class="profile-image" src="{% static 'images/blank-profile.png' %}" alt="Profile picture unavailable">
                 {% endif %}
-                <a href="{% url 'logout' %}" class="profile-btn" style="margin: 0">Log Out</a>
+                <a href="{% url 'logout_c' %}" class="profile-btn" style="margin: 0">Log Out</a>
             </div>
                 <div class="profile-details">
                     <p>First Name: {{ profile.first_name }}</p>
@@ -20,6 +20,7 @@
             <div class="profile-btns">
             <a href="{% url 'edit_profile' %}" class="profile-btn">Edit Profile</a>
             <a href="{% url 'delete_profile' %}" class="profile-btn">Delete Profile</a>
+                <a href="{% url 'change_password' %}" class="profile-btn">Change Password</a>
             </div>
             </div>
         </div>

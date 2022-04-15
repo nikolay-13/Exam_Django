@@ -88,6 +88,9 @@
     padding-left: 6px;
     padding-right: 6px;
 }
+li{
+    list-style-type: none;
+}
 .selection option{
     margin-left: 5px;
     margin-right: 5px;

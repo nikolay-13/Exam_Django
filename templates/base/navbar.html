@@ -5,9 +5,9 @@
         <a href="{% url 'store' %}" class="w3-bar-item w3-button w3-wide"><img style="max-height: 30px"
                                                                class="nav-image"
                                                                src="{% static 'images/favico.png' %}"></a>
-{#        {% if user|has_group:'managers'%}#}
-    <a href="#" class="w3-bar-item w3-button w3-button">Add Item</a>
-{#    {% endif %}#}
+        {% if user|has_group:'managers' or user.is_superuser%}
+    <a href="{% url 'create_product' %}" class="w3-bar-item w3-button w3-button">Add Item</a>
+    {% endif %}
 
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small" id="filter-func">
@@ -17,7 +17,7 @@
             {% else %}
             <a href="{% url 'login_page' %}" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Sign In</a>
             {% endif %}
-            <a href="#" class="w3-bar-item w3-button"><i class="fa fa-solid fa-cart-plus"></i> Cart</a>
+            <a href="{% url 'cart_details' %}" class="w3-bar-item w3-button"><i class="fa fa-solid fa-cart-plus"></i> Cart</a>
 
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
@@ -40,11 +40,11 @@
 {% else %}
 <a href="{% url 'login_page' %}" onclick="w3_close()" class="w3-bar-item w3-button">Sign In<i style="margin-left: 5px" class="fa fa-user"></i></a>
 {% endif %}
-<a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button">Cart<i style="margin-left: 5px" class="fa fa-solid fa-cart-plus"></i></a>
+<a href="{% url 'cart_details' %}" onclick="w3_close()" class="w3-bar-item w3-button">Cart<i style="margin-left: 5px" class="fa fa-solid fa-cart-plus"></i></a>
 
     {% if user.is_authenticated %}
 
-        <a href="{% url 'logout' %}" onclick="w3_close()" class="w3-bar-item w3-button">Log Out</a>
+        <a href="{% url 'logout_c' %}" onclick="w3_close()" class="w3-bar-item w3-button">Log Out</a>
     {% endif %}
 
 </nav>

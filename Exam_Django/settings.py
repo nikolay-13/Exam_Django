@@ -99,7 +99,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 CART_SESSION_ID = 'cart'
-
 # LOGGING = {
 #     'version': 1,
 #     'filters': {

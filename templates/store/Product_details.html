@@ -60,27 +60,31 @@
 
                 <p>Brand: &nbsp;{{ product.brand }}</p>
                 <p>Price: ${{ product.price|floatformat:'2' }}</p>
-                <p>Available colors:
-                    <select class="selection">
-                        <option disabled selected>---</option>
-                        {% for color in colors %}
-                            <option>{{ color.color }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
-                <p>Available sizes:
-                    <select class="selection">
-                        <option disabled selected>---</option>
-                        {% for size in sizes %}
+{#                <p>Available colors:#}
+{#                    <select class="selection">#}
+{#                        <option disabled selected>---</option>#}
+{#                        {% for color in colors %}#}
+{#                            <option>{{ color.color }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </p>#}
+{#                <p>Available sizes:#}
+{#                    <select class="selection">#}
+{#                        <option disabled selected>---</option>#}
+{#                        {% for size in sizes %}#}
+{##}
+{#                            <option href="#">{{ size.size }}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
+{#                </p>#}
 
-                            <option href="#">{{ size.size }}</option>
-                        {% endfor %}
-                    </select>
-                </p>
+                <form method="post" action="{% url 'add_to_cart' product.product_id %}">
+                    {% csrf_token %}
 
-
-                <a href="#" class="buy-button">Buy<i style="margin-left: 10px" class="fa fa-solid fa-cart-plus"></i></a>
-
+                    {{cart_form.as_ul}}
+                    {% csrf_token %}
+                    <input class="buy-button" type="submit" value="Add to cart">
+                </form>
 
                 <a class="liked-button" href="javascript:like()" id="liked"><i class="fa fa-solid fa-heart"></i></a>
 
