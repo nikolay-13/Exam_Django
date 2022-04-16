@@ -61,18 +61,3 @@ class ProductDetailsView(views.DetailView):
         return dataset
 
 
-def cart(request):
-    context = {}
-    return render(request, 'store/Cart.html', context)
-
-
-def checkout(request):
-    context = {}
-    return render(request, 'store/Checkout.html', context)
-
-
-class CreateProduct(views.CreateView):
-    template_name = 'store/forms/ceate_product.html'
-    form_class = ProductMainForm
-    success_url = '#'
-

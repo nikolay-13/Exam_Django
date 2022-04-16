@@ -6,8 +6,6 @@ from Exam_Django.store import views
 
 urlpatterns = [
     path('', views.StoreMainPageView.as_view(), name="store"),
-    path('cart/', views.cart, name="cart"),
-    path('checkout/', views.checkout, name="checkout"),
     path('product_details/<str:pk>/', views.ProductDetailsView.as_view(), name='product_details'),
 
 ]

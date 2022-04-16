@@ -5,6 +5,7 @@ from django.db import models
 
 from Exam_Django.common import choices
 from Exam_Django.common.image_resize import image_resize
+from Exam_Django.store.model_utils import validators
 
 
 def create_new_ref_number():
@@ -12,25 +13,43 @@ def create_new_ref_number():
 
 
 class Product(models.Model):
+    _ERROR_FIELD_TITLE = 'title'
+    _ERROR_FIELD_BRAND = 'brand'
+    _TITLE_MIN_LENGTH = 2
+    _TITLE_MAX_LENGTH = 20
+    _BRAND_MIN_LENGTH = 2
+    _BRAND_MAX_LENGTH = 20
     _MIN_QNT = 0
     _MIN_PRICE = 0
+    _ID_MAX_LENGTH = 16
+    _PRICE_DEFAULT = 0
+    _QNT_DEFAULT = 0
+    _BRAND_DEFAULT = 'no brand'
+    _BRAND_ERROR_MSG = f'Ensure brand contain only letters, dashes or backslash.\n Ensure title not exceed {_BRAND_MAX_LENGTH} characters'
+    _TITLE_ERROR_MSG = f'Ensure title contain only letters, dashes or backslash.\n Ensure title not exceed {_TITLE_MAX_LENGTH} characters'
     product_id = models.CharField(
         primary_key=True,
-        max_length=16,
+        max_length=_ID_MAX_LENGTH,
         blank=False,
         editable=False,
         unique=True,
         default=create_new_ref_number
     )
     title = models.CharField(
-        max_length=20,
+        max_length=_TITLE_MAX_LENGTH,
         blank=False,
         null=False,
+        validators=(
+            validators.NameValidator(min_length=_TITLE_MIN_LENGTH,
+                                     max_length=_TITLE_MAX_LENGTH,
+                                     field=_ERROR_FIELD_TITLE,
+                                     msg=_TITLE_ERROR_MSG),
+        )
     )
     price = models.FloatField(
         blank=False,
         null=False,
-        default=0,
+        default=_PRICE_DEFAULT,
         validators=(
             MinValueValidator(_MIN_PRICE),
         )
@@ -40,19 +59,26 @@ class Product(models.Model):
         null=False
     )
     av_qnt = models.IntegerField(
-        default=0,
+        default=_QNT_DEFAULT,
         validators=(
             MinValueValidator(_MIN_QNT),
         )
 
     )
     brand = models.CharField(
-        max_length=30,
-        default='No brand',
+        max_length=_BRAND_MAX_LENGTH,
+        default=_BRAND_DEFAULT,
+        validators=(
+            validators.NameValidator(min_length=_BRAND_MIN_LENGTH,
+                                     max_length=_BRAND_MAX_LENGTH,
+                                     field=_ERROR_FIELD_BRAND,
+                                     msg=_BRAND_ERROR_MSG),
+        )
     )
 
 
 class ProductSizes(models.Model):
+    _RELATED_NAME = 'size'
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -60,7 +86,7 @@ class ProductSizes(models.Model):
         null=False,
         editable=False,
         unique=False,
-        related_name='size',
+        related_name=_RELATED_NAME,
     )
     size = models.CharField(
         max_length=max((len(x) for x, _ in choices.SIZES)),
@@ -68,12 +94,16 @@ class ProductSizes(models.Model):
         blank=False,
         choices=choices.SIZES,
     )
+
     def __str__(self):
         return self.size
 
 
 class ProductColors(models.Model):
     _COLOR_MAX_LENGTH = 20
+    _RELATED_NAME = 'color'
+    _COLOR_MIN_LENGTH = 1
+    _COLOR_ERROR_MSG = f'Ensure color contain only letters, dashes or backslash.\n Ensure title not exceed {_COLOR_MAX_LENGTH} characters'
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -81,12 +111,16 @@ class ProductColors(models.Model):
         null=False,
         editable=False,
         unique=False,
-        related_name='color',
+        related_name=_RELATED_NAME,
     )
     color = models.CharField(
         max_length=_COLOR_MAX_LENGTH,
         null=True,
         blank=True,
+        validators=(validators.NameValidator(max_length=_COLOR_MAX_LENGTH,
+                                             min_length=_COLOR_MIN_LENGTH,
+                                             field=_RELATED_NAME,
+                                             msg=_COLOR_ERROR_MSG),)
     )
 
     def __str__(self):
@@ -94,6 +128,7 @@ class ProductColors(models.Model):
 
 
 class ProductCategory(models.Model):
+    _RELATED_NAME = 'category'
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -101,7 +136,7 @@ class ProductCategory(models.Model):
         null=False,
         editable=False,
         unique=False,
-        related_name='category'
+        related_name=_RELATED_NAME
     )
     category = models.CharField(
         max_length=max((len(x) for x, _ in choices.CATEGORY)),
@@ -112,6 +147,7 @@ class ProductCategory(models.Model):
 
 
 class ProductGender(models.Model):
+    _RELATED_NAME = 'gender'
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -119,7 +155,7 @@ class ProductGender(models.Model):
         null=False,
         editable=False,
         unique=False,
-        related_name='gender'
+        related_name=_RELATED_NAME
     )
     gender = models.CharField(
         max_length=max((len(x) for x, _ in choices.GENDER)),
@@ -130,6 +166,8 @@ class ProductGender(models.Model):
 class ProductPictures(models.Model):
     _MAX_WIDTH = 480
     _MAX_HEIGHT = 640
+    _RELATED_NAME = 'pictures'
+    _UPLOAD_TO = 'products/'
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -137,11 +175,11 @@ class ProductPictures(models.Model):
         null=False,
         editable=False,
         unique=False,
-        related_name='pictures',
+        related_name=_RELATED_NAME,
     )
 
     picture = models.ImageField(
-        upload_to='products/',
+        upload_to=_UPLOAD_TO,
         null=True,
         blank=True,
     )

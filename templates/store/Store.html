@@ -56,7 +56,9 @@
                                 <a class="btn btn-outline-success" href="{% url 'edit_product' item.product_id %}">Edit</a>
                                 {% endif %}
                                 <a class="btn btn-outline-success" href="{% url 'product_details' item.product_id %}">View</a>
-                            <a class="btn btn-outline-success" href="{% url 'delete_product' item.product_id %}">Delete</a>
+                            {% if user|has_group:'managers' or user.is_superuser%}
+                                <a class="btn btn-outline-success" href="{% url 'delete_product' item.product_id %}">Delete</a>
+                            {% endif %}
                                 <h4 style="display: inline-block; float: right">
                                     <strong>${{ item.price|floatformat:'2' }}</strong></h4>
                             </div>
