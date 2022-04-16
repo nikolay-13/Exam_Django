@@ -50,7 +50,7 @@
                                  alt="Picture unavailable">
                             <p class="thumbnail-text" id="thumbnail-text{{ item.product_id }}">{{ item.brand }}--{{ item.title }}</p>
                             <div class="item-description" id="item-description{{ item.product_id }}">
-                                <h5><strong>{{ item.description }}</strong></h5>
+                                <h6><strong>{{ item.description|truncatechars:30 }}</strong></h6>
                                 <hr>
                                 {% if user|has_group:'managers' or user.is_superuser%}
                                 <a class="btn btn-outline-success" href="{% url 'edit_product' item.product_id %}">Edit</a>

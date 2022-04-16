@@ -27,7 +27,7 @@ class Product(models.Model):
         blank=False,
         null=False,
     )
-    price = models.IntegerField(
+    price = models.FloatField(
         blank=False,
         null=False,
         default=0,
