@@ -11,6 +11,8 @@ class NameValidator:
         self.max_length = max_length
 
     def __call__(self, value):
-        if not re.match(fr'^[a-zA-Z-/]{self.min_length,self.max_length}$', value):
+        exp = r'^[a-zA-Z-\\ ]{' + str(self.min_length) + ',' + str(self.max_length) + '}$'
+        if not re.match(exp, value):
             raise ValidationError(self.msg)
-        return value
+        else:
+            return value
