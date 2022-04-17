@@ -1,4 +1,7 @@
 import environ
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,11 +21,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #installed apps
+    # installed apps
     'Exam_Django.store.apps.StoreConfig',
     'Exam_Django.accounts.apps.AccountsConfig',
     'Exam_Django.cart.apps.CartConfig',
     'Exam_Django.staff_app.apps.StaffAppConfig',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +103,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'mediafiles/'
 CART_SESSION_ID = 'cart'
+cloudinary.config(
+    cloud_name=env('CLOUD_NAME'),
+    api_key=env('API_KEY'),
+    api_secret=env('API_SECRET'),
+)
 # LOGGING = {
 #     'version': 1,
 #     'filters': {

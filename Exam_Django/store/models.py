@@ -1,5 +1,6 @@
 import random
 
+from cloudinary.models import CloudinaryField
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -178,17 +179,17 @@ class ProductPictures(models.Model):
         related_name=_RELATED_NAME,
     )
 
-    picture = models.ImageField(
-        upload_to=_UPLOAD_TO,
-        null=True,
-        blank=True,
-    )
+    picture = CloudinaryField('picture',
+                              transformation={'width': '480', 'height': '640', 'crop': 'fill', 'radius': '20'},
+                              folder='/e-com/product', format="webp", )
 
-    def save(self, *args, **kwargs):
-        super(ProductPictures, self).save(*args, **kwargs)
 
-        img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)
-        return img
+    #
+    # def save(self, *args, **kwargs):
+    #     super(ProductPictures, self).save(*args, **kwargs)
+    #
+    #     img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)
+    #     return img
 
     def __str__(self):
         return self.picture

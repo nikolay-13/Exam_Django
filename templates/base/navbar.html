@@ -5,7 +5,7 @@
         <a href="{% url 'store' %}" class="w3-bar-item w3-button w3-wide"><img style="max-height: 30px"
                                                                class="nav-image"
                                                                src="{% static 'images/favico.png' %}"></a>
-        {% if user|has_group:'managers' or user.is_superuser%}
+        {% if user|has_group:'managers' or request.user.is_superuser%}
     <a href="{% url 'create_product' %}" class="w3-bar-item w3-button w3-button">Add Item</a>
     {% endif %}
 

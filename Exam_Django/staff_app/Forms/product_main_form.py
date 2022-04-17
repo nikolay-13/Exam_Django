@@ -60,7 +60,7 @@ class ProductMainForm(forms.ModelForm):
                 color=self.cleaned_data['color']
             )
             for img in images:
-                ProductPictures.objects.update_or_create(
+                ProductPictures.objects.create(
                     product_id=product,
                     picture=img
                 )

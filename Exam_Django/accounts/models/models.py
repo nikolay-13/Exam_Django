@@ -1,5 +1,6 @@
 import random
 
+from cloudinary.models import CloudinaryField
 from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
@@ -22,11 +23,9 @@ class Profile(models.Model):
     _FIRST_NAME_MIN_LENGTH = 2
     _LAST_NAME_MIN_LENGTH = 2
     _TEL_MAX_LENGTH = 10
-    profile_picture = models.ImageField(
-        upload_to='media/profile_pics',
-        null=True,
-        blank=True,
-    )
+    profile_picture = CloudinaryField('picture',
+                                      transformation={'width': '240', 'height': '240', 'crop': 'fill', 'radius': '20'},
+                                      folder='/e-com/profile', format="webp", )
     first_name = models.CharField(
         max_length=_FIRST_NAME_MAX_LENGTH,
         validators=(
@@ -60,10 +59,10 @@ class Profile(models.Model):
     class Meta:
         unique_together = ('tel_number', 'ref_num')
 
-    def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
-        if self.profile_picture:
-            img = image_resize(self.profile_picture, self._MAX_WIDTH, self._MAX_HEIGHT)
+    # def save(self, *args, **kwargs):
+    #     super(Profile, self).save(*args, **kwargs)
+    #     if self.profile_picture:
+    #         img = image_resize(self.profile_picture, self._MAX_WIDTH, self._MAX_HEIGHT)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
