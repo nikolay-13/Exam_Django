@@ -5,7 +5,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from Exam_Django.common import choices
-from Exam_Django.common.image_resize import image_resize
 from Exam_Django.store.model_utils import validators
 
 
@@ -169,6 +168,7 @@ class ProductPictures(models.Model):
     _MAX_HEIGHT = 640
     _RELATED_NAME = 'pictures'
     _UPLOAD_TO = 'products/'
+    _FORMAT = "webp"
     product_id = models.ForeignKey(
         to=Product,
         on_delete=models.CASCADE,
@@ -180,16 +180,6 @@ class ProductPictures(models.Model):
     )
 
     picture = CloudinaryField('picture',
-                              transformation={'width': '480', 'height': '640', 'crop': 'fill', 'radius': '20'},
-                              folder='/e-com/product', format="webp", )
-
-
-    #
-    # def save(self, *args, **kwargs):
-    #     super(ProductPictures, self).save(*args, **kwargs)
-    #
-    #     img = image_resize(self.picture, self._MAX_WIDTH, self._MAX_HEIGHT)
-    #     return img
-
-    def __str__(self):
-        return self.picture
+                              transformation={'width': f'{_MAX_WIDTH}', 'height': f'{_MAX_HEIGHT}', 'crop': 'fill',
+                                              'radius': '20'},
+                              folder=f'/e-com/products/{product_id}', format={_FORMAT}, )

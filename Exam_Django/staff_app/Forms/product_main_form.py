@@ -1,3 +1,4 @@
+import cloudinary.uploader
 from django import forms
 
 from django.utils.safestring import mark_safe
@@ -13,9 +14,29 @@ class ProductMainForm(forms.ModelForm):
         super(ProductMainForm, self).__init__(*args, **kwargs)
 
     _COLOR_FIELD_MAX_LEN = 20
+    _MAX_WIDTH = 480
+    _MAX_HEIGHT = 640
+    _UPLOAD_TO = 'products/'
+    _FORMAT = "webp"
     _IMAGE_MESSAGE = 'Image was invalid'
-    images = forms.ImageField(
-        widget=forms.FileInput(attrs={'multiple': 'multiple'}),
+    ob_image = forms.ImageField(
+        # widget=forms.FileInput(attrs={'multiple': 'multiple'}),
+        required=False,
+    )
+    image1 = forms.ImageField(
+        # widget=forms.FileInput(attrs={'multiple': 'multiple'}),
+        required=False,
+    )
+    image2 = forms.ImageField(
+        # widget=forms.FileInput(attrs={'multiple': 'multiple'}),
+        required=False,
+    )
+    image3 = forms.ImageField(
+        # widget=forms.FileInput(attrs={'multiple': 'multiple'}),
+        required=False,
+    )
+    image4 = forms.ImageField(
+        # widget=forms.FileInput(attrs={'multiple': 'multiple'}),
         required=False,
     )
     category = forms.ChoiceField(
@@ -33,11 +54,17 @@ class ProductMainForm(forms.ModelForm):
         model = Product
         exclude = ('av_qnt',)
 
+
+
     def save(self, commit=True):
         product = super(ProductMainForm, self).save(commit=commit)
         if commit:
             product.save()
-            images = self.request.FILES.getlist('images')
+            images = ('ob_image',
+                      'image1',
+                      'image2',
+                      'image3',
+                      'image4',)
             sizes = self.cleaned_data['size']
             ProductCategory.objects.update_or_create(
                 product_id=product,
@@ -60,10 +87,16 @@ class ProductMainForm(forms.ModelForm):
                 color=self.cleaned_data['color']
             )
             for img in images:
-                ProductPictures.objects.create(
-                    product_id=product,
-                    picture=img
-                )
+                if img in self.request.FILES:
+                    ProductPictures.objects.create(
+                        product_id=product,
+                        picture=cloudinary.uploader.upload_image(self.request.FILES[img], transformation={'width': f'{self._MAX_WIDTH}',
+                                                                                           'height': f'{self._MAX_HEIGHT}',
+                                                                                           'crop': 'fill',
+                                                                                           'radius': '20'},
+                                                                 folder=f'e-com/products/',
+                                                                 format=self._FORMAT, )
+                    )
         return product
 
 
@@ -71,10 +104,14 @@ class ImagePreviewWidget(forms.widgets.FileInput):
     def render(self, name, value, attrs=None, **kwargs):
         input_html = super().render(name, value, attrs=None, **kwargs)
         img_html = mark_safe(f'<img src="{value.url}"style="width:100px;height:100px"/><br>')
-        return f'{input_html}{img_html}'
-
+        return f'{img_html}Change:{input_html}'
 
 class EditProductForm(forms.ModelForm):
+    _MAX_WIDTH = 480
+    _MAX_HEIGHT = 640
+    _UPLOAD_TO = 'products/'
+    _FORMAT = "webp"
+    _IMAGE_MESSAGE = 'Image was invalid'
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request') if 'request' in kwargs else None
@@ -82,9 +119,9 @@ class EditProductForm(forms.ModelForm):
         super(EditProductForm, self).__init__(*args, **kwargs)
 
         for img in self.item.pictures.all():
-            self.fields[img.picture.name] = forms.ImageField(
+            self.fields[img.picture] = forms.ImageField(
                 initial=img.picture, widget=ImagePreviewWidget(),
-                label=f'current: {img.picture.name.split(".")[-2]}'
+                label=f'current: '
             )
 
     add_images = forms.ImageField(widget=forms.FileInput(attrs={'multiple': 'multiple'}), required=False)
@@ -93,19 +130,3 @@ class EditProductForm(forms.ModelForm):
         model = Product
         exclude = ('images', 'brand', 'av_qnt')
 
-    def save(self, commit=True):
-        item = super(EditProductForm, self).save(commit=commit)
-        images = ProductPictures.objects.filter(product_id=item)
-        new_images = self.request.FILES.getlist('add_images')
-        for img in images:
-            img.picture = self.cleaned_data[img.picture.name]
-            img.save()
-        if new_images:
-            for img in new_images:
-                ProductPictures.objects.create(
-
-                    product_id=item,
-                    picture=img
-                )
-        if commit:
-            item.save()

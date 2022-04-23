@@ -1,10 +1,7 @@
 from django.db.models import Q
-from django.shortcuts import render
 from django.views import generic as views
-
 from Exam_Django.cart.forms import CartAddItem
 from Exam_Django.common.choices import get_choice, get_qnt_choice
-from Exam_Django.staff_app.Forms.product_main_form import ProductMainForm
 from Exam_Django.store.models import Product
 
 
@@ -56,7 +53,7 @@ class ProductDetailsView(views.DetailView):
             'gender': gender,
             'pictures': pictures,
             'range': range(pictures.count()),
-            'cart_form' :cart_form,
+            'cart_form': cart_form,
         }
         return dataset
 

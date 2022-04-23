@@ -18,14 +18,15 @@ def create_new_ref_number():
 class Profile(models.Model):
     _MAX_WIDTH = 250
     _MAX_HEIGHT = 250
+    _PIC_FORMAT = "webp"
     _FIRST_NAME_MAX_LENGTH = 20
     _LAST_NAME_MAX_LENGTH = 20
     _FIRST_NAME_MIN_LENGTH = 2
     _LAST_NAME_MIN_LENGTH = 2
     _TEL_MAX_LENGTH = 10
     profile_picture = CloudinaryField('picture',
-                                      transformation={'width': '240', 'height': '240', 'crop': 'fill', 'radius': '20'},
-                                      folder='/e-com/profile', format="webp", )
+                                      transformation={'width': f'{_MAX_WIDTH}', 'height': f'{_MAX_HEIGHT}', 'crop': 'fill', 'radius': '20'},
+                                      folder='/e-com/profile', format={_PIC_FORMAT}, )
     first_name = models.CharField(
         max_length=_FIRST_NAME_MAX_LENGTH,
         validators=(

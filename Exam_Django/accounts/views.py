@@ -1,3 +1,4 @@
+import cloudinary.uploader
 from django import views
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.views import LogoutView, PasswordChangeView, PasswordResetView
@@ -59,13 +60,14 @@ class ProfileDetailsView(views.generic.View):
 
     def get(self, request):
         user = get_user(request)
-        if user:
+        if user and isinstance(user, Profile):
             context = {
                 'profile': user,
                 'picture': user.profile_picture,
             }
             return render(request, self.template_name, context)
-        return HttpResponse('<h1>Unauthorized</h1>', status=401)
+        return HttpResponse(f'<h1>Nothing to show here <a href="{request.META.get("HTTP_REFERER")}">Go Back</a></h1>',
+                            status=401)
 
 
 class EditProfileView(views.generic.View):
@@ -74,7 +76,7 @@ class EditProfileView(views.generic.View):
 
     def get(self, request):
         user = get_user(request)
-        if user:
+        if user and isinstance(user, Profile):
             context = {
                 'form': self.form_class(
                     initial={
@@ -87,17 +89,26 @@ class EditProfileView(views.generic.View):
                 'pic': user.profile_picture,
             }
             return render(request, self.template_name, context)
-        return HttpResponse('<h1>Unauthorized</h1>', status=401)
+        return HttpResponse(f'<h1>Nothing to show here <a href="{request.META.get("HTTP_REFERER")}">Go Back</a></h1>',
+                            status=401)
 
     def post(self, request):
         user = get_user(request)
-        if user:
+        if user and isinstance(user, Profile):
             form = self.form_class(request.POST, request.FILES)
             if form.is_valid():
                 user.first_name = form.cleaned_data['first_name']
                 user.last_name = form.cleaned_data['last_name']
                 user.tel_number = form.cleaned_data['tel_number']
-                user.profile_picture = form.cleaned_data['profile_picture'] or user.profile_picture
+                user.profile_picture = cloudinary.uploader.destroy(user.profile_picture.public_id, invalidate=True)
+                user.profile_picture = cloudinary.uploader.upload_image(
+                    form.cleaned_data['profile_picture'] or user.profile_picture,
+                    transformation={'width': '250',
+                                    'height': '250',
+                                    'crop': 'fill',
+                                    'radius': '20'},
+                    folder=f'e-com/profile/',
+                    format='webp', )
                 user.user.email = form.cleaned_data['email']
                 user.save()
                 return redirect('profile_page')
@@ -113,7 +124,7 @@ class DeleteProfileView(views.generic.View):
 
     def post(self, request):
         user = get_user(request)
-        if user:
+        if user and isinstance(user, Profile):
             user.user.delete()
             return redirect('login_page')
         return HttpResponse('<h1>Unauthorized</h1>', status=401)
@@ -122,9 +133,11 @@ class DeleteProfileView(views.generic.View):
 def get_user(request):
     if not request.user == 'AnonymousUser':
         if request.user.is_authenticated:
-            user = get_object_or_404(Profile, user=request.user)
-            if request.user == user.user:
+            try:
+                user = get_object_or_404(Profile, user=request.user)
                 return user
+            except Profile.DoesNotExist:
+                return None
     return None
 
 

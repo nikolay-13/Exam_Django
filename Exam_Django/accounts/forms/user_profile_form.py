@@ -1,5 +1,6 @@
 import re
 
+import cloudinary.uploader
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm
@@ -10,8 +11,9 @@ UserModel = get_user_model()
 
 
 class UserProfileCreationForm(UserCreationForm):
-    _MAX_WIDTH = 100
-    _MAX_HEIGHT = 100
+    _MAX_WIDTH = 250
+    _MAX_HEIGHT = 250
+    _FORMAT = 'webp'
     _pattern = r'^[A-z]*$'
     _Name_length_msg = ' must be at least two characters.'
     _Name_Character_Msg = ' must contain only letters.'
@@ -33,7 +35,6 @@ class UserProfileCreationForm(UserCreationForm):
     class Meta:
         model = UserModel
         fields = ('email', 'password1', 'password2')
-
 
     def clean_first_name(self):
         super(UserProfileCreationForm, self).clean()
@@ -74,14 +75,19 @@ class UserProfileCreationForm(UserCreationForm):
         user_p = super().save(commit=commit)
 
         Profile.objects.create(
-            profile_picture=self.cleaned_data['profile_picture'],
+            profile_picture=cloudinary.uploader.upload_image(self.cleaned_data['profile_picture'],
+                                                             transformation={'width': f'{self._MAX_WIDTH}',
+                                                                             'height': f'{self._MAX_HEIGHT}',
+                                                                             'crop': 'fill',
+                                                                             'radius': '20'},
+                                                             folder=f'e-com/profile/',
+                                                             format=self._FORMAT, ),
             first_name=self.cleaned_data['first_name'],
             last_name=self.cleaned_data['last_name'],
             tel_number=self.cleaned_data['tel_number'],
             user=user_p,
         )
         return user_p
-
 
 
 class UserLogInForm(forms.Form):
@@ -111,5 +117,3 @@ class EditProfileForm(forms.ModelForm):
         )
 
     email = forms.EmailField()
-
-

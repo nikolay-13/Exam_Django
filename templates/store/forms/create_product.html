@@ -4,6 +4,7 @@
         <div class="edit-card">
 <form method="post" class="edit_product_form" enctype="multipart/form-data">
     {{ form}}
+    {{ pic_form }}
     {% csrf_token %}
     <input type="submit" value="Save" id="save-btn">
 </form>
