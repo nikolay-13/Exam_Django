@@ -50,7 +50,7 @@ def edit_item(request, pk):
                             request.FILES[f'image{imag}'].file,
                             transformation={'width': '480',
                                             'height': '640',
-                                            'crop': 'fill',
+                                            'aspect-ratio': '1.1',
                                             'radius': '20'},
                             folder=f'e-com/products/',
                             format='webp', )
@@ -63,7 +63,7 @@ def edit_item(request, pk):
                                 request.FILES[f'image{imag}'].file,
                                 transformation={'width': '480',
                                                 'height': '640',
-                                                'crop': 'fill',
+                                                'aspect-ratio': '1.1',
                                                 'radius': '20'},
                                 folder=f'e-com/products/',
                                 format='webp', )

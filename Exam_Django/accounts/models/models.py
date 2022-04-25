@@ -25,7 +25,7 @@ class Profile(models.Model):
     _LAST_NAME_MIN_LENGTH = 2
     _TEL_MAX_LENGTH = 10
     profile_picture = CloudinaryField('picture',
-                                      transformation={'width': f'{_MAX_WIDTH}', 'height': f'{_MAX_HEIGHT}', 'crop': 'fill', 'radius': '20'},
+                                      transformation={'width': f'{_MAX_WIDTH}', 'height': f'{_MAX_HEIGHT}', 'aspect-ratio': '1.1', 'radius': '20'},
                                       folder='/e-com/profile', format={_PIC_FORMAT}, )
     first_name = models.CharField(
         max_length=_FIRST_NAME_MAX_LENGTH,

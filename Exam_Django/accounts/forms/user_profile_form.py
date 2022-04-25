@@ -78,7 +78,7 @@ class UserProfileCreationForm(UserCreationForm):
             profile_picture=cloudinary.uploader.upload_image(self.cleaned_data['profile_picture'],
                                                              transformation={'width': f'{self._MAX_WIDTH}',
                                                                              'height': f'{self._MAX_HEIGHT}',
-                                                                             'crop': 'fill',
+                                                                             'aspect-ratio': '1.1',
                                                                              'radius': '20'},
                                                              folder=f'e-com/profile/',
                                                              format=self._FORMAT, ),

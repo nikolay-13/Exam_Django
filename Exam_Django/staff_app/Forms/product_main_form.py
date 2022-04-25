@@ -91,7 +91,7 @@ class ProductMainForm(forms.ModelForm):
                         picture=cloudinary.uploader.upload_image(self.request.FILES[img],
                                                                  transformation={'width': f'{self._MAX_WIDTH}',
                                                                                  'height': f'{self._MAX_HEIGHT}',
-                                                                                 'crop': 'fill',
+                                                                                 'aspect-ratio': '1.1',
                                                                                  'radius': '20'},
                                                                  folder=f'e-com/products/',
                                                                  format=self._FORMAT, )
