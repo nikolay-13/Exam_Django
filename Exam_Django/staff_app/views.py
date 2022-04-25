@@ -44,7 +44,7 @@ def edit_item(request, pk):
             for imag in range(5):
                 if item.pictures.all().count() > imag:
                     img = item.pictures.all()[imag]
-                    if f'image{imag}' in request.FILES:
+                    if f'image{imag}' in request.FILES.keys():
                         img.picture = cloudinary.uploader.destroy(img.picture.public_id, invalidate=True)
                         img.picture = cloudinary.uploader.upload_image(
                             request.FILES[f'image{imag}'].file,
@@ -56,17 +56,18 @@ def edit_item(request, pk):
                             format='webp', )
                         img.save()
                 else:
-                    ProductPictures.objects.create(
-                        product_id=item,
-                        picture=cloudinary.uploader.upload_image(
-                            request.FILES[f'image{imag}'].file,
-                            transformation={'width': '480',
-                                            'height': '640',
-                                            'crop': 'fill',
-                                            'radius': '20'},
-                            folder=f'e-com/products/',
-                            format='webp', )
-                    )
+                    if f'image{imag}' in request.FILES.keys():
+                        ProductPictures.objects.create(
+                            product_id=item,
+                            picture=cloudinary.uploader.upload_image(
+                                request.FILES[f'image{imag}'].file,
+                                transformation={'width': '480',
+                                                'height': '640',
+                                                'crop': 'fill',
+                                                'radius': '20'},
+                                folder=f'e-com/products/',
+                                format='webp', )
+                        )
             return redirect('store')
         form = EditProductForm(request.POST, request.FILES, product=item)
     return render(request, 'store/forms/edit_product.html', {'form': form})
