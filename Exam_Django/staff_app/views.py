@@ -25,32 +25,46 @@ def create_product_view(request):
 @check_user_group_dec('managers', 'admin')
 def edit_item(request, pk):
     item = Product.objects.get(product_id=pk)
+    initials = {'category': item.category.first(),
+                'size': item.size.first(),
+                'gender': item.gender.first(),
+                'color': item.color.first(),
+                'image0': '',
+                'image1': '',
+                'image2': '', }
+    for image in range(item.pictures.all().count()):
+        initials[f'image{image}'] = item.pictures.all()[image].picture.url
+
     form = EditProductForm(instance=item,
-                           initial={
-                               'category': item.category.first(),
-                               'size': item.size.first(),
-                               'gender': item.gender.first(),
-                               'color': item.color.first(),
-                           }, product=item, request=request)
+                           initial=initials, product=item, request=request)
     if request.method.lower() == 'post':
         form = EditProductForm(request.POST, request.FILES, product=item, instance=item, request=request)
         if form.is_valid():
             form.save()
-            new_images = request.FILES.getlist('add_images')
-            for imag in item.pictures.all():
-                image = imag.picture.public_id
-                new = form
-            if new_images:
-                for imgs in new_images:
-                    ProductPictures.objects.create(
-                        product_id=item,
-                        picture=cloudinary.uploader.upload_image(
-                            imgs,
+            for imag in range(5):
+                if item.pictures.all().count() > imag:
+                    img = item.pictures.all()[imag]
+                    if f'image{imag}' in request.FILES:
+                        img.picture = cloudinary.uploader.destroy(img.picture.public_id, invalidate=True)
+                        img.picture = cloudinary.uploader.upload_image(
+                            request.FILES[f'image{imag}'].file,
                             transformation={'width': '480',
                                             'height': '640',
                                             'crop': 'fill',
                                             'radius': '20'},
-                            folder=f'e-com/profile/',
+                            folder=f'e-com/products/',
+                            format='webp', )
+                        img.save()
+                else:
+                    ProductPictures.objects.create(
+                        product_id=item,
+                        picture=cloudinary.uploader.upload_image(
+                            request.FILES[f'image{imag}'].file,
+                            transformation={'width': '480',
+                                            'height': '640',
+                                            'crop': 'fill',
+                                            'radius': '20'},
+                            folder=f'e-com/products/',
                             format='webp', )
                     )
             return redirect('store')

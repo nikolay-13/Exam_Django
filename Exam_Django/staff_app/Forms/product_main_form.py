@@ -54,8 +54,6 @@ class ProductMainForm(forms.ModelForm):
         model = Product
         exclude = ('av_qnt',)
 
-
-
     def save(self, commit=True):
         product = super(ProductMainForm, self).save(commit=commit)
         if commit:
@@ -90,21 +88,23 @@ class ProductMainForm(forms.ModelForm):
                 if img in self.request.FILES:
                     ProductPictures.objects.create(
                         product_id=product,
-                        picture=cloudinary.uploader.upload_image(self.request.FILES[img], transformation={'width': f'{self._MAX_WIDTH}',
-                                                                                           'height': f'{self._MAX_HEIGHT}',
-                                                                                           'crop': 'fill',
-                                                                                           'radius': '20'},
+                        picture=cloudinary.uploader.upload_image(self.request.FILES[img],
+                                                                 transformation={'width': f'{self._MAX_WIDTH}',
+                                                                                 'height': f'{self._MAX_HEIGHT}',
+                                                                                 'crop': 'fill',
+                                                                                 'radius': '20'},
                                                                  folder=f'e-com/products/',
                                                                  format=self._FORMAT, )
                     )
         return product
 
 
-class ImagePreviewWidget(forms.widgets.FileInput):
+class ImagePreviewWidget(forms.widgets.ClearableFileInput):
     def render(self, name, value, attrs=None, **kwargs):
         input_html = super().render(name, value, attrs=None, **kwargs)
-        img_html = mark_safe(f'<img src="{value.url}"style="width:100px;height:100px"/><br>')
+        img_html = mark_safe(f'<img src="{value}"style="width:100px;height:100px"/><br>')
         return f'{img_html}Change:{input_html}'
+
 
 class EditProductForm(forms.ModelForm):
     _MAX_WIDTH = 480
@@ -117,16 +117,52 @@ class EditProductForm(forms.ModelForm):
         self.request = kwargs.pop('request') if 'request' in kwargs else None
         self.item = kwargs.pop('product') if 'product' in kwargs else None
         super(EditProductForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].label = ''
 
-        for img in self.item.pictures.all():
-            self.fields[img.picture] = forms.ImageField(
-                initial=img.picture, widget=ImagePreviewWidget(),
-                label=f'current: '
-            )
+        # for img in self.item.pictures.all():
+        #     self.fields[img.picture] = forms.ImageField(
+        #         initial=img.picture, widget=ImagePreviewWidget(),
+        #         label=f'current '
+        #     )
+    # def parse_initial(self, key):
+    #     ob_picture = self.item.pictures.all()[0].picture if self.item.pictures.all()[0] else None
+    #     image1 = self.item.pictures.all()[1].picture if self.item.pictures.all()[1] else None
+    #     image2 = self.item.pictures.all()[2].picture if self.item.pictures.all()[2] else None
+    #     image3 = self.item.pictures.all()[3].picture if self.item.pictures.all()[3] else None
+    #     image4 = self.item.pictures.all()[4].picture if self.item.pictures.all()[4] else None
+    #     vals = {
+    #         'ob_image': ob_picture,
+    #         'image1': image1,
+    #         'image2': image2,
+    #         'image3': image3,
+    #         'image4': image4,
+    #     }
+    #     return vals[key]
 
-    add_images = forms.ImageField(widget=forms.FileInput(attrs={'multiple': 'multiple'}), required=False)
+    image0 = forms.FileField(
+        widget=ImagePreviewWidget(),
+        required=False,
+
+    )
+    image1 = forms.ImageField(
+        widget=ImagePreviewWidget(),
+        required=False,
+    )
+    image2 = forms.ImageField(
+        widget=ImagePreviewWidget(),
+        required=False,
+    )
+    image3 = forms.ImageField(
+        widget=ImagePreviewWidget(),
+        required=False,
+    )
+    image4 = forms.ImageField(
+        widget=ImagePreviewWidget(),
+        required=False,
+    )
+
 
     class Meta:
         model = Product
         exclude = ('images', 'brand', 'av_qnt')
-

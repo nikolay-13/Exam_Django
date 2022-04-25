@@ -182,4 +182,4 @@ class ProductPictures(models.Model):
     picture = CloudinaryField('picture',
                               transformation={'width': f'{_MAX_WIDTH}', 'height': f'{_MAX_HEIGHT}', 'crop': 'fill',
                                               'radius': '20'},
-                              folder=f'/e-com/products/{product_id}', format={_FORMAT}, )
+                              folder=f'/e-com/products/{product_id}', format={_FORMAT},)
