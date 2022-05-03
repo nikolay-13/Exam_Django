@@ -40,7 +40,7 @@
         <td class="">${{ item.price }}</td>
         <td class="">${{ item.total_price }}</td>
         <td>
-            <form action="{% url 'remove_from_cart' item.product.product_id%}" method="post">
+            <form action="{% url 'remove_from_cart' item.product.product_id %}" method="post">
                 <input class="buy-button" style="background: rgba(220,20,60,0.62)" type="submit" value="Remove">
                 {% csrf_token %}
             </form>

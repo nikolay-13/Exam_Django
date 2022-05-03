@@ -9,14 +9,14 @@ from Exam_Django.cart.cart import Cart
 @require_POST
 def add_to_cart(request, product_pk):
     cart = Cart(request)
-    product = get_object_or_404(Product, product_id=product_pk)
+    product = Product.objects.get(product_id=product_pk)
     sizes = request.POST.get('size')
     colors = request.POST.get('color')
     qnt = request.POST.get('quantity')
     form = CartAddItem(request.POST,
                        color_choice=((colors, colors),),
                        size_choice=((sizes, sizes),),
-                       av_qnt=((qnt,qnt),)
+                       av_qnt=((qnt, qnt),)
                        )
     if form.is_valid():
         cl_dat = form.cleaned_data
@@ -31,7 +31,7 @@ def add_to_cart(request, product_pk):
 
 def remove_from_cart(request, product_pk):
     cart = Cart(request)
-    product = get_object_or_404(Product, product_id=product_pk)
+    product = Product.objects.get(product_id=product_pk)
     cart.remove(product)
     return redirect('cart_details')
 

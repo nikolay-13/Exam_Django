@@ -102,7 +102,10 @@ class ProductMainForm(forms.ModelForm):
 class ImagePreviewWidget(forms.widgets.ClearableFileInput):
     def render(self, name, value, attrs=None, **kwargs):
         input_html = super().render(name, value, attrs=None, **kwargs)
-        img_html = mark_safe(f'<img src="{value}"style="width:100px;height:100px"/><br>')
+        if value:
+            img_html = mark_safe(f'<img src="{value}"style="width:100px;height:100px"/><br>')
+        else:
+            img_html = None
         return f'{img_html}Change:{input_html}'
 
 
@@ -117,28 +120,11 @@ class EditProductForm(forms.ModelForm):
         self.request = kwargs.pop('request') if 'request' in kwargs else None
         self.item = kwargs.pop('product') if 'product' in kwargs else None
         super(EditProductForm, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].label = ''
-
-        # for img in self.item.pictures.all():
-        #     self.fields[img.picture] = forms.ImageField(
-        #         initial=img.picture, widget=ImagePreviewWidget(),
-        #         label=f'current '
-        #     )
-    # def parse_initial(self, key):
-    #     ob_picture = self.item.pictures.all()[0].picture if self.item.pictures.all()[0] else None
-    #     image1 = self.item.pictures.all()[1].picture if self.item.pictures.all()[1] else None
-    #     image2 = self.item.pictures.all()[2].picture if self.item.pictures.all()[2] else None
-    #     image3 = self.item.pictures.all()[3].picture if self.item.pictures.all()[3] else None
-    #     image4 = self.item.pictures.all()[4].picture if self.item.pictures.all()[4] else None
-    #     vals = {
-    #         'ob_image': ob_picture,
-    #         'image1': image1,
-    #         'image2': image2,
-    #         'image3': image3,
-    #         'image4': image4,
-    #     }
-    #     return vals[key]
+        self.fields['image0'].label = ''
+        self.fields['image1'].label = ''
+        self.fields['image2'].label = ''
+        self.fields['image3'].label = ''
+        self.fields['image4'].label = ''
 
     image0 = forms.FileField(
         widget=ImagePreviewWidget(),
@@ -161,7 +147,6 @@ class EditProductForm(forms.ModelForm):
         widget=ImagePreviewWidget(),
         required=False,
     )
-
 
     class Meta:
         model = Product

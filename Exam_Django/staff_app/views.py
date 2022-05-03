@@ -25,10 +25,7 @@ def create_product_view(request):
 @check_user_group_dec('managers', 'admin')
 def edit_item(request, pk):
     item = Product.objects.get(product_id=pk)
-    initials = {'category': item.category.first(),
-                'size': item.size.first(),
-                'gender': item.gender.first(),
-                'color': item.color.first(),
+    initials = {
                 'image0': '',
                 'image1': '',
                 'image2': '', }
